@@ -1,15 +1,20 @@
-<h3>Log Masuk</h3>
-<form method="POST" action="signin_semak.php">
-<div>
-    Username = : <br>
-    <input type ="text" name = "username" placeholder="Sila isi Username" maxlength = "255" size = "15%" required autofocus /> 
-    <br>
-    Password = : <br>
-    <input type ="password" name="password" placeholder="*************" size="15%" required autofocus />
-</div>
-<div>
-    <button name = "Submit" type="submit">LOGIN</button>
-    <button type="reset">RESET</button>
+<?php
+require 'connect.php';
+session_start();
+if (isset($_POST['username'])){
+    $user = mysqli_real_escape_string($conn,$_POST['username']);
+    $pass = mysqli_real_escape_string($conn,$_POST['password']);
 
-</div>
-</form>
+    $query = mysqli_query($conn,"SELECT * FROM pengguna WHERE idPengguna='user'; and password='$pass'" );
+    $row - mysqli_fetch_assoc($query);
+    if(mysqli_num_rows($query)==0||$row['password']!=$pass)
+    {
+    echo "<script> alert('Id Pengguan atau Password salah'); window.location='index1.php'</script>";
+    }else{
+    $_SESSION ['username']=$row['idPengguna'];
+    $_SESSION ['nama']=$row['nama'];
+    $_SESSION ['level']=$row['aras'];
+    header("location: dashboard.php");
+    }
+}
+?>
